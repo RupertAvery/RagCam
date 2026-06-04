@@ -1,0 +1,69 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: lesson1 - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "D:\DOCUME~1\Ender\LOCALS~1\Temp\RSP3D.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "GRF_STATIC" /Fp"Debug/rsmview.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Ender\LOCALS~1\Temp\RSP3D.tmp" 
+Creating temporary file "D:\DOCUME~1\Ender\LOCALS~1\Temp\RSP3E.tmp" with contents
+[
+opengl32.lib glu32.lib glaux.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/RagCamDB.pdb" /debug /machine:I386 /out:"../RagCamDB.exe" /pdbtype:sept 
+".\Debug\3DMath.obj"
+".\Debug\adler32.obj"
+".\Debug\Camera.obj"
+".\Debug\compress.obj"
+".\Debug\crc32.obj"
+".\Debug\deflate.obj"
+".\Debug\Frustum.obj"
+".\Debug\GND.obj"
+".\Debug\grf.obj"
+".\Debug\inffast.obj"
+".\Debug\inflate.obj"
+".\Debug\inftrees.obj"
+".\Debug\ro-common.obj"
+".\Debug\Rsm-common.obj"
+".\Debug\Rsm.obj"
+".\Debug\RSM_Mesh.obj"
+".\Debug\rsmview.obj"
+".\Debug\RSW.obj"
+".\Debug\tgaload.obj"
+".\Debug\trees.obj"
+".\Debug\zutil.obj"
+]
+Creating command line "link.exe @D:\DOCUME~1\Ender\LOCALS~1\Temp\RSP3E.tmp"
+<h3>Output Window</h3>
+Compiling...
+RSM_Mesh.cpp
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(36) : warning C4101: 't' : unreferenced local variable
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(35) : warning C4101: 'v' : unreferenced local variable
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(37) : warning C4101: 'texture' : unreferenced local variable
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(296) : warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(363) : warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(364) : warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(365) : warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(367) : warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(373) : warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(379) : warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(409) : warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(443) : warning C4305: 'argument' : truncation from 'const double' to 'float'
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(337) : warning C4101: 'buffer' : unreferenced local variable
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(336) : warning C4101: 'q1' : unreferenced local variable
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(336) : warning C4101: 'q2' : unreferenced local variable
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(424) : warning C4101: 't' : unreferenced local variable
+C:\Developer\Epsilon\My Programs\C\RagCam\src\RSM_Mesh.cpp(423) : warning C4101: 'v' : unreferenced local variable
+Linking...
+
+
+
+<h3>Results</h3>
+RagCamDB.exe - 0 error(s), 17 warning(s)
+</pre>
+</body>
+</html>
