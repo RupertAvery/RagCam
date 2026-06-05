@@ -360,24 +360,26 @@ void RSM_Mesh::Display(bounding_box_t *box, ro_transf_t *ptransf)
 		for (i = 0; i < 4; i++)
 			q[i] /= norm;
 
-		GLfloat two_x = q[0] * 2.0;
-		GLfloat two_y = q[1] * 2.0;
-		GLfloat two_z = q[2] * 2.0;
+		GLfloat two_x = q[0] * 2.0f;
+		GLfloat two_y = q[1] * 2.0f;
+		GLfloat two_z = q[2] * 2.0f;
+		GLfloat two_w = q[3] * 2.0f;  // scalar component — was missing, causing scale instead of rotate
 
-		Ori[0] = 1.0 - two_y * q[1] - two_z * q[2];
-		Ori[1] = two_x * q[1];
-		Ori[2] = two_z * q[0];
-		Ori[3] = 0.0;
+		// Column-major rotation matrix from unit quaternion (x,y,z,w)
+		Ori[0]  = 1.0f - two_y*q[1] - two_z*q[2];
+		Ori[1]  = two_x*q[1] - two_w*q[2];
+		Ori[2]  = two_z*q[0] + two_w*q[1];
+		Ori[3]  = 0.0f;
 
-		Ori[4] = two_x * q[1];
-		Ori[5] = 1.0 - two_x * q[0] - two_z * q[2];
-		Ori[6] = two_y * q[2];
-		Ori[7] = 0.0;
+		Ori[4]  = two_x*q[1] + two_w*q[2];
+		Ori[5]  = 1.0f - two_x*q[0] - two_z*q[2];
+		Ori[6]  = two_y*q[2] - two_w*q[0];
+		Ori[7]  = 0.0f;
 
-		Ori[8] = two_z * q[0];
-		Ori[9] = two_y * q[2];
-		Ori[10] = 1.0 - two_x * q[0] - two_y * q[1];
-		Ori[11] = 0.0;
+		Ori[8]  = two_z*q[0] - two_w*q[1];
+		Ori[9]  = two_y*q[2] + two_w*q[0];
+		Ori[10] = 1.0f - two_x*q[0] - two_y*q[1];
+		Ori[11] = 0.0f;
 
 		Ori[12] = 0.0;
 		Ori[13] = 0.0;
