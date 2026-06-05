@@ -442,7 +442,7 @@ void RSW::PickObject(CFrustum *g_Frustum)
 		{
 			glPushName(i);
 			// if (g_Frustum.BoxInFrustum(models[i].position.x,models[i].position.y,models[i].position.z,realmodels[models[i].model].box.range[0] * models[i].position.sx,realmodels[models[i].model].box.range[1] * models[i].position.sy,realmodels[models[i].model].box.range[2] * models[i].position.sz))
-			realmodels[models[i].model].Display(models[i].position);
+			realmodels[models[i].model].Display(models[i].position, ground.sizeX, ground.sizeY);
 			glPopName();
 		}
 
@@ -544,14 +544,14 @@ void RSW::Display(float waterlevel, CFrustum *g_Frustum)
 				if (g_Frustum->PointInFrustum(models[i].position.x, models[i].position.y, models[i].position.z))
 				{
 					modelsdrawn++;
-					realmodels[models[i].model].Display(models[i].position);
+					realmodels[models[i].model].Display(models[i].position, ground.sizeX, ground.sizeY);
 				}
 			}
 			else
 			{
 				{
 					modelsdrawn++;
-					realmodels[models[i].model].Display(models[i].position);
+					realmodels[models[i].model].Display(models[i].position, ground.sizeX, ground.sizeY);
 				}
 			}
 

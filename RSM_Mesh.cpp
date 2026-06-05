@@ -419,109 +419,62 @@ void RSM_Mesh::Display(bounding_box_t *box, ro_transf_t *ptransf)
 	if (!main || !only)
 		glTranslatef(transf.todo[9], transf.todo[10], transf.todo[11]);
 
+	// Batch faces by texture to minimise glBegin/glEnd and state-change calls.
+	// Within a batch, glNormal3f is set per triangle (valid in immediate mode).
+	int cur_texture = -1;
+
 	for (i = 0; i < nall_faces; i++) {
 		ro_vertex_t *v;
 		ro_vertex_t *t;
-		int texture;
 
-		//clamp textures to texture range
-		if (all_faces[i].text > ntextures || all_faces[i].text < 0) {
-			if (i==0)
-				texture = 0;
+		int texture = (all_faces[i].text >= 0 && all_faces[i].text < ntextures)
+		            ? all_faces[i].text : 0;
+
+		if (texture != cur_texture) {
+			if (cur_texture >= 0)
+				glEnd();
+
+			if (alphatex[texture]) {
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glDisable(GL_ALPHA_TEST);
 			} else {
-				texture = all_faces[i].text;
+				glEnable(GL_ALPHA_TEST);
+				glAlphaFunc(GL_GREATER, 0.1f);
+				glDisable(GL_BLEND);
+			}
+
+			glBindTexture(GL_TEXTURE_2D, textures[texture]);
+			glBegin(GL_TRIANGLES);
+			cur_texture = texture;
 		}
 
+		// Compute face normal (winding matches render order 0,2,1)
+		CVector3 fv[3];
+		fv[0] = CVector3(pos_vtx[all_faces[i].v[0]][0], pos_vtx[all_faces[i].v[0]][1], pos_vtx[all_faces[i].v[0]][2]);
+		fv[1] = CVector3(pos_vtx[all_faces[i].v[2]][0], pos_vtx[all_faces[i].v[2]][1], pos_vtx[all_faces[i].v[2]][2]);
+		fv[2] = CVector3(pos_vtx[all_faces[i].v[1]][0], pos_vtx[all_faces[i].v[1]][1], pos_vtx[all_faces[i].v[1]][2]);
+		vNormal = Normal(fv);
 
-		glBindTexture(GL_TEXTURE_2D, textures[texture]);
+		glNormal3f(vNormal.x, vNormal.y, vNormal.z);
 
-		if (alphatex[texture]) {
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-		} else {
-			glEnable(GL_ALPHA_TEST);
-			glAlphaFunc(GL_GREATER, 0.90);
-		}
+		t = &tex_vtx[all_faces[i].t[0]]; glTexCoord2f((*t)[1], (*t)[2]);
+		v = &pos_vtx[all_faces[i].v[0]]; glVertex3f((*v)[0], (*v)[1], (*v)[2]);
 
+		t = &tex_vtx[all_faces[i].t[2]]; glTexCoord2f((*t)[1], (*t)[2]);
+		v = &pos_vtx[all_faces[i].v[2]]; glVertex3f((*v)[0], (*v)[1], (*v)[2]);
 
-		GLfloat Mat[16];
-		glGetFloatv(GL_MODELVIEW_MATRIX, &Mat[0]);
+		t = &tex_vtx[all_faces[i].t[1]]; glTexCoord2f((*t)[1], (*t)[2]);
+		v = &pos_vtx[all_faces[i].v[1]]; glVertex3f((*v)[0], (*v)[1], (*v)[2]);
+	}
 
-		#define NRMVTX(n) *&nrm_vtx[all_faces[i].v[0]]
-		#define POSVTX(n) *&pos_vtx[all_faces[i].v[n]]
-
-		vTriangle[0] = MatrixMultVect3f(Mat, POSVTX(0)[0], POSVTX(0)[1], POSVTX(0)[2]);
-		vTriangle[1] = MatrixMultVect3f(Mat, POSVTX(1)[0], POSVTX(1)[1], POSVTX(1)[2]);
-		vTriangle[2] = MatrixMultVect3f(Mat, POSVTX(2)[0], POSVTX(2)[1], POSVTX(2)[2]);
-		vNormal = MatrixMultVect3f(Mat, NRMVTX(0)[0], NRMVTX(0)[1], NRMVTX(0)[2]);
-
-		glPushMatrix();
-
-		glLoadIdentity();
-
-		glDisable(GL_LIGHTING);
- 
-		glBegin(GL_LINES);    
-		glColor3f(1.0f,0.0f,0.0f);
-		glVertex3f (vTriangle[0].x, vTriangle[0].y, vTriangle[0].z);
-		glColor3f(1.0f,1.0f,0.0f);
-		glVertex3f (vNormal.x, vNormal.y, vNormal.z);
+	if (cur_texture >= 0) {
 		glEnd();
-
-		glBegin(GL_LINE_LOOP);    
-		glColor3f(1.0f,0.0f,1.0f);
-		glVertex3f (vTriangle[0].x, vTriangle[0].y, vTriangle[0].z);
-		glVertex3f (vTriangle[1].x, vTriangle[1].y, vTriangle[1].z);
-		glVertex3f (vTriangle[2].x, vTriangle[2].y, vTriangle[2].z);
-		glEnd();
-
-		//v = &pos_vtx[all_faces[i].v[1]];    glVertex3f ((*v)[0], (*v)[1], (*v)[2]);
-
-		glEnable(GL_LIGHTING);
-		glPopMatrix();
-
-		/*
-		glPushMatrix();
-			glLoadIdentity();
-			glBegin(GL_TRIANGLES);    
-				glNormal3f(vNormal[0].x,vNormal[0].y,vNormal[0].z);
-				t = &tex_vtx[all_faces[i].t[0]];    glTexCoord2f ((*t)[1], (*t)[2]);
-				glVertex3f (vTriangle[0].x, vTriangle[0].y, vTriangle[0].z);
-
-				t = &tex_vtx[all_faces[i].t[2]];    glTexCoord2f ((*t)[1], (*t)[2]);
-				glVertex3f (vTriangle[2].x, vTriangle[2].y, vTriangle[2].z);
-
-				t = &tex_vtx[all_faces[i].t[1]];	glTexCoord2f ((*t)[1], (*t)[2]);
-				glVertex3f (vTriangle[1].x, vTriangle[1].y, vTriangle[1].z);
-			glEnd();
-		glPopMatrix();
-		*//*
-
-		glBegin(GL_TRIANGLES);    
-
-			glNormal3f(vNormal.x,vNormal.y,vNormal.z);
- 
-			t = &tex_vtx[all_faces[i].t[0]];    glTexCoord2f ((*t)[1], (*t)[2]);
-			v = &pos_vtx[all_faces[i].v[0]];    glVertex3f ((*v)[0], (*v)[1], (*v)[2]);
-
-
-			t = &tex_vtx[all_faces[i].t[2]];    glTexCoord2f ((*t)[1], (*t)[2]);
-			v = &pos_vtx[all_faces[i].v[2]];	glVertex3f ((*v)[0], (*v)[1], (*v)[2]);
-
-
-			t = &tex_vtx[all_faces[i].t[1]];	glTexCoord2f ((*t)[1], (*t)[2]);
-			v = &pos_vtx[all_faces[i].v[1]];    glVertex3f ((*v)[0], (*v)[1], (*v)[2]);
-
-
-		glEnd();
-
-		*/
-		if (alphatex[texture]) {
+		if (alphatex[cur_texture])
 			glDisable(GL_BLEND);
-		} else {
+		else
 			glDisable(GL_ALPHA_TEST);
-		}
-  }
+	}
 
 
 	glPopMatrix();

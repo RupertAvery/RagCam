@@ -378,7 +378,7 @@ void RSM::DrawAxes(ro_position_t pos)
 	glPopMatrix();
 }
 
-void RSM::Display(ro_position_t pos)
+void RSM::Display(ro_position_t pos, int gndW, int gndH)
 {
 	CFrustum g_Frustum;
 
@@ -392,9 +392,9 @@ void RSM::Display(ro_position_t pos)
 
 	glTranslatef(pos.x, pos.y, pos.z);
 
-	glRotatef(pos.rx, 1.0, 0.0, 0.0);
-	glRotatef(pos.ry, 0.0, 1.0, 0.0);
-	glRotatef(pos.rz, 0.0, 0.0, 1.0);
+	glRotatef(pos.rx, 1.0f, 0.0f, 0.0f);
+	glRotatef(pos.ry, 0.0f, 1.0f, 0.0f);
+	glRotatef(pos.rz, 0.0f, 0.0f, 1.0f);
 
 	glScalef(pos.sx, -pos.sy, pos.sz);
 
@@ -422,26 +422,17 @@ void RSM::Display(ro_position_t pos)
 
 	glMultMatrixf(Rot);
 
-	if (!meshes[0].only)
-	{
-		glTranslatef(-box.range[0], -box.max[1], -box.range[2]);
-	}
-	else
-	{
-		glTranslatef(0.0, -box.max[1] + box.range[1], 0.0);
-	}
-
-	glRotatef(meshes[0].transf.todo[15] * 180.0 / 3.14159,
+	glRotatef(meshes[0].transf.todo[15] * 180.0f / 3.14159f,
 			  meshes[0].transf.todo[16], meshes[0].transf.todo[17], meshes[0].transf.todo[18]);
 
-	if (meshes[0].only)
-		glTranslatef(-box.range[0], -box.range[1], -box.range[2]);
+	glTranslatef(meshes[0].transf.todo[9], meshes[0].transf.todo[10], meshes[0].transf.todo[11]);
 
 	if (!meshes[0].only)
-		glTranslatef(meshes[0].transf.todo[9], meshes[0].transf.todo[10], meshes[0].transf.todo[11]);
+		glTranslatef(-box.range[0], -box.max[1], -box.range[2]);
+	else
+		glTranslatef(0.0f, -box.max[1] + box.range[1], 0.0f);
 
-	// need to rotate the bounding box for some reason...
-	glRotatef(-90, 1.0f, 0.0f, 0.0f);
+	glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);	// RSM models are Z-up; rotate to OpenGL Y-up
 
 	glGetFloatv(GL_MODELVIEW_MATRIX, &Mat[0]);
 

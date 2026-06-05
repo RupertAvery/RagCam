@@ -213,8 +213,7 @@ int DrawGLScene(GLvoid)
 
 	glPushMatrix();
 
-	GLUquadricObj *thesun;
-	thesun = gluNewQuadric();
+	static GLUquadricObj *thesun = gluNewQuadric();
 
 	glPushMatrix();
 	glTranslatef(g_LightPosition[0], g_LightPosition[1], g_LightPosition[2]);
@@ -613,7 +612,7 @@ int DrawGLScene(GLvoid)
 		pos.rx = pos.ry = pos.rz = 0.0;
 		pos.sx = pos.sy = pos.sz = 1.0;
 		//	for (int i = 0; i < nfiles; i++) {
-		rsm[0].Display(pos);
+		rsm[0].Display(pos, 0, 0);
 		//	}
 	}
 
