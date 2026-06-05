@@ -1032,19 +1032,32 @@ int WINAPI WinMain(HINSTANCE hInstance,		// Instance
 
 	while (!done) // Loop That Runs While done=FALSE
 	{
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Is There A Message Waiting?
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Drain all pending messages
 		{
-			if (msg.message == WM_QUIT) // Have We Received A Quit Message?
+			if (msg.message == WM_QUIT)
 			{
-				done = TRUE; // If So done=TRUE
+				done = TRUE;
 			}
-			else // If Not, Deal With Window Messages
+			else
 			{
-				TranslateMessage(&msg); // Translate The Message
-				DispatchMessage(&msg);	// Dispatch The Message
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
 			}
 		}
-		else // If There Are No Messages
+		else
+		// while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Drain all pending messages
+		// {
+		// 	if (msg.message == WM_QUIT)
+		// 	{
+		// 		done = TRUE;
+		// 	}
+		// 	else
+		// 	{
+		// 		TranslateMessage(&msg);
+		// 		DispatchMessage(&msg);
+		// 	}
+		// }
+		// if (!done) // If There Are No Messages
 		{
 			// Draw The Scene.  Watch For ESC Key And Quit Messages From DrawGLScene()
 

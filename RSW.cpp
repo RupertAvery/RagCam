@@ -515,7 +515,7 @@ void RSW::Display(float waterlevel, CFrustum *g_Frustum)
 
 	if (selectobject)
 	{
-		PickObject(g_Frustum);
+		//PickObject(g_Frustum);
 		selectobject = false;
 	}
 
