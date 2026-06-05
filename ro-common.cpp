@@ -243,20 +243,19 @@ bool LoadGRFTexture(Grf *grfFile, char *filename, GLuint texture, bool *alpha, b
 		cdata = (unsigned char *)p.data;
 		ndata = (unsigned char *)malloc(sizeof(unsigned char) * 4 * h * w);
 
+		// Source stride is components bytes/pixel: 3 for 24-bit TGA, 4 for 32-bit.
+		// tgaLoad already swaps BGR->RGB, so src[0..2] = R,G,B.
+		int comp = p.info.components;
+
 		for (j = 0; j < h; j++)
 			for (k = 0; k < w; k++)
 			{
-				unsigned char a, r, g, b;
+				unsigned char *src = cdata + comp * (k + (h - 1 - j) * w);
 
-				r = coord4(cdata, k, h - 1 - j, 0);
-				g = coord4(cdata, k, h - 1 - j, 1);
-				b = coord4(cdata, k, h - 1 - j, 2);
-				a = coord4(cdata, k, h - 1 - j, 3);
-
-				ndata[4 * (j * w + k)] = r;
-				ndata[4 * (j * w + k) + 1] = g;
-				ndata[4 * (j * w + k) + 2] = b;
-				ndata[4 * (j * w + k) + 3] = a;
+				ndata[4 * (j * w + k)]     = src[0];
+				ndata[4 * (j * w + k) + 1] = src[1];
+				ndata[4 * (j * w + k) + 2] = src[2];
+				ndata[4 * (j * w + k) + 3] = (comp == 4) ? src[3] : 255;
 			}
 
 		char buf[512];
@@ -270,8 +269,9 @@ bool LoadGRFTexture(Grf *grfFile, char *filename, GLuint texture, bool *alpha, b
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-		gluBuild2DMipmaps(GL_TEXTURE_2D, p.info.tgaColourType, p.info.width,
-						  p.info.height, p.info.tgaColourType, GL_UNSIGNED_BYTE, ndata);
+		// ndata is always RGBA regardless of source depth, so upload as RGBA.
+		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, w, h,
+						  GL_RGBA, GL_UNSIGNED_BYTE, ndata);
 
 		free(ndata);
 
@@ -361,20 +361,19 @@ bool LoadTexture(char *ragnapath, char *filename, GLuint texture, bool *alpha)
 		cdata = (unsigned char *)p.data;
 		ndata = (unsigned char *)malloc(sizeof(unsigned char) * 4 * h * w);
 
+		// Source stride is components bytes/pixel: 3 for 24-bit TGA, 4 for 32-bit.
+		// tgaLoad already swaps BGR->RGB, so src[0..2] = R,G,B.
+		int comp = p.info.components;
+
 		for (j = 0; j < h; j++)
 			for (k = 0; k < w; k++)
 			{
-				unsigned char a, r, g, b;
+				unsigned char *src = cdata + comp * (k + (h - 1 - j) * w);
 
-				r = coord4(cdata, k, h - 1 - j, 0);
-				g = coord4(cdata, k, h - 1 - j, 1);
-				b = coord4(cdata, k, h - 1 - j, 2);
-				a = coord4(cdata, k, h - 1 - j, 3);
-
-				ndata[4 * (j * w + k)] = r;
-				ndata[4 * (j * w + k) + 1] = g;
-				ndata[4 * (j * w + k) + 2] = b;
-				ndata[4 * (j * w + k) + 3] = a;
+				ndata[4 * (j * w + k)]     = src[0];
+				ndata[4 * (j * w + k) + 1] = src[1];
+				ndata[4 * (j * w + k) + 2] = src[2];
+				ndata[4 * (j * w + k) + 3] = (comp == 4) ? src[3] : 255;
 			}
 
 		char buf[512];
@@ -388,8 +387,9 @@ bool LoadTexture(char *ragnapath, char *filename, GLuint texture, bool *alpha)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-		gluBuild2DMipmaps(GL_TEXTURE_2D, p.info.tgaColourType, p.info.width,
-						  p.info.height, p.info.tgaColourType, GL_UNSIGNED_BYTE, ndata);
+		// ndata is always RGBA regardless of source depth, so upload as RGBA.
+		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, w, h,
+						  GL_RGBA, GL_UNSIGNED_BYTE, ndata);
 
 		free(ndata);
 
