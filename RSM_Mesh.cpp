@@ -131,7 +131,7 @@ bool RSM_Mesh::GRFLoad(int *offset, unsigned char *p, GLuint *all_textures, bool
 		// fread (&n, sizeof(int), 1, fp);
 		which[i] = n;
 		textures[i] = all_textures[n];
-		alphatex[i] = all_alphatex[i];
+		alphatex[i] = all_alphatex[n];	// alpha flag belongs to global texture n, not local index i
 	}
 
 	memcpy(&transf, p + *offset, sizeof(ro_transf_t));
@@ -213,7 +213,7 @@ bool RSM_Mesh::Load(FILE *fp, GLuint *all_textures, bool *all_alphatex, bool mai
 		fread(&n, sizeof(int), 1, fp);
 		which[i] = n;
 		textures[i] = all_textures[n];
-		alphatex[i] = all_alphatex[i];
+		alphatex[i] = all_alphatex[n];	// alpha flag belongs to global texture n, not local index i
 	}
 
 	fread(&transf, sizeof(ro_transf_t), 1, fp);
