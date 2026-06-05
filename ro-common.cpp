@@ -150,13 +150,19 @@ bool LoadGRFTexture(Grf *grfFile, char *filename, GLuint texture, bool *alpha, b
 					g = (int)lut[data[dataptr + k + (h - 1 - j) * w]][1];
 					b = (int)lut[data[dataptr + k + (h - 1 - j) * w]][2];
 
-					ndata[4 * (j * w + k)] = b;
-					ndata[4 * (j * w + k) + 1] = g;
-					ndata[4 * (j * w + k) + 2] = r;
-					if (g == 0 && r > 253 && b > 253)
+					if (g == 0 && r > 253 && b > 253) {
+						// Zero RGB on transparent pixels so bilinear filtering
+						// blends toward black rather than bleeding magenta into edges
+						ndata[4 * (j * w + k)]     = 0;
+						ndata[4 * (j * w + k) + 1] = 0;
+						ndata[4 * (j * w + k) + 2] = 0;
 						ndata[4 * (j * w + k) + 3] = 0;
-					else
+					} else {
+						ndata[4 * (j * w + k)]     = b;
+						ndata[4 * (j * w + k) + 1] = g;
+						ndata[4 * (j * w + k) + 2] = r;
 						ndata[4 * (j * w + k) + 3] = 255;
+					}
 				}
 		}
 
@@ -176,13 +182,19 @@ bool LoadGRFTexture(Grf *grfFile, char *filename, GLuint texture, bool *alpha, b
 					g = coord3(cdata, k, h - 1 - j, 1);
 					b = coord3(cdata, k, h - 1 - j, 2);
 
-					ndata[4 * (j * w + k)] = b;
-					ndata[4 * (j * w + k) + 1] = g;
-					ndata[4 * (j * w + k) + 2] = r;
-					if (g == 0 && r > 253 && b > 253)
+					if (g == 0 && r > 253 && b > 253) {
+						// Zero RGB on transparent pixels so bilinear filtering
+						// blends toward black rather than bleeding magenta into edges
+						ndata[4 * (j * w + k)]     = 0;
+						ndata[4 * (j * w + k) + 1] = 0;
+						ndata[4 * (j * w + k) + 2] = 0;
 						ndata[4 * (j * w + k) + 3] = 0;
-					else
+					} else {
+						ndata[4 * (j * w + k)]     = b;
+						ndata[4 * (j * w + k) + 1] = g;
+						ndata[4 * (j * w + k) + 2] = r;
 						ndata[4 * (j * w + k) + 3] = 255;
+					}
 				}
 		}
 
