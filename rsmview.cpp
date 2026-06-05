@@ -612,7 +612,7 @@ int DrawGLScene(GLvoid)
 		pos.rx = pos.ry = pos.rz = 0.0;
 		pos.sx = pos.sy = pos.sz = 1.0;
 		//	for (int i = 0; i < nfiles; i++) {
-		rsm[0].Display(pos, 0, 0);
+		rsm[0].Display(pos);
 		//	}
 	}
 

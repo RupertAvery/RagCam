@@ -378,7 +378,7 @@ void RSM::DrawAxes(ro_position_t pos)
 	glPopMatrix();
 }
 
-void RSM::Display(ro_position_t pos, int gndW, int gndH)
+void RSM::Display(ro_position_t pos)
 {
 	CFrustum g_Frustum;
 
@@ -390,7 +390,9 @@ void RSM::Display(ro_position_t pos, int gndW, int gndH)
 
 	glPushMatrix();
 
-	glTranslatef(pos.x, pos.y, pos.z);
+	// RSW positions are map-centred; Y is negated (RO vs OpenGL convention);
+	// Z offset of -10 aligns with GRFEditor's tile-zero origin.
+	glTranslatef(pos.x, -pos.y, pos.z - 10.0f);
 
 	glRotatef(pos.rx, 1.0f, 0.0f, 0.0f);
 	glRotatef(pos.ry, 0.0f, 1.0f, 0.0f);

@@ -19,7 +19,7 @@ public:
 	bool GRFLoad(Grf *grffile, char *filename, bool extract = FALSE);
 	bool Load(char *ragnapath, char *filename);
 	void Save(char *filename);
-	void Display(ro_position_t pos, int gndW, int gndH);
+	void Display(ro_position_t pos);
 	void DisplayMesh(bounding_box_t *b, int n, ro_transf_t *ptransf=NULL);
 	void DrawAxes(ro_position_t pos);
 
