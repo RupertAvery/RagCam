@@ -73,7 +73,10 @@ RSM_Mesh *selectedmodel;
 ro_position_t minipos;
 
 GLuint DLid;
-float g_LightPosition[4] = {10.0f, 10.0f, 10.0f, 10.0f};
+// w = 0 makes this a directional (infinitely distant) light; xyz is the
+// direction TOWARD the light. Mostly from above with a slight tilt so
+// vertical faces still catch some diffuse.
+float g_LightPosition[4] = {0.4f, 1.0f, 0.4f, 0.0f};
 
 int mapw, maph;
 float mapx = 0.0f, mapy = 0.0f, rota = 0.0f;

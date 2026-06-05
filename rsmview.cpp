@@ -137,14 +137,17 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 	glFogf(GL_FOG_END, 1000.0f);	   // Fog End Depth
 									   // To turn fog off, you can call glDisable(GL_FOG);
 
-	// glEnable(GL_NORMALIZE);
+	// Models are non-uniformly scaled, so their normals aren't unit length.
+	// GL_NORMALIZE renormalizes them, otherwise lighting intensity varies with scale.
+	glEnable(GL_NORMALIZE);
 
 #ifdef LIGHT_ENABLE
-	float ambience[4] = {0.03f, 0.03f, 0.03f, 1.0};		// The color of the light in the world
-	float diffuse[4] = {1.0f, 1.0f, 1.0f, 1.0};			// The color of the positioned light
-	glLightfv(GL_LIGHT0, GL_AMBIENT, ambience);			// Set our ambience values (Default color without direct light)
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);			// Set our diffuse color (The light color)
-	glLightfv(GL_LIGHT0, GL_POSITION, g_LightPosition); // This Sets our light position
+	// Strong ambient + moderate directional diffuse = fairly even lighting with gentle shading.
+	float ambience[4] = {0.55f, 0.55f, 0.55f, 1.0f};	// base light everywhere (even, no dark side)
+	float diffuse[4] = {0.55f, 0.55f, 0.55f, 1.0f};		// directional contribution from above
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambience);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+	glLightfv(GL_LIGHT0, GL_POSITION, g_LightPosition); // directional (w=0) — see ragcam.h
 
 	glEnable(GL_LIGHT0);   // Turn this light on
 	glEnable(GL_LIGHTING); // This turns on lighting
