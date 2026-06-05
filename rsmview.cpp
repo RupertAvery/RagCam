@@ -169,7 +169,7 @@ int InitGL(GLvoid) // All Setup For OpenGL Goes Here
 	// glEnable(GL_ALPHA_TEST);						// Enable Alpha Testing  (disable blending)
 
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	glEnable(GL_FOG);
+	//glEnable(GL_FOG);
 
 	BuildFont(hDC);
 
@@ -213,11 +213,11 @@ int DrawGLScene(GLvoid)
 
 	glPushMatrix();
 
-	static GLUquadricObj *thesun = gluNewQuadric();
+	// static GLUquadricObj *thesun = gluNewQuadric();
 
 	glPushMatrix();
 	glTranslatef(g_LightPosition[0], g_LightPosition[1], g_LightPosition[2]);
-	gluSphere(thesun, 10, 8, 8);
+	// gluSphere(thesun, 10, 8, 8);
 
 	glPopMatrix();
 
@@ -1022,7 +1022,7 @@ int WINAPI WinMain(HINSTANCE hInstance,		// Instance
 	//}
 
 	// Create Our OpenGL Window
-	if (!CreateGLWindow("RagCam", 800, 600, 32, fullscreen))
+	if (!CreateGLWindow("RagCam", 1366, 768, 32, fullscreen))
 	{
 		return 0; // Quit If Window Was Not Created
 	}
@@ -1112,7 +1112,7 @@ int WINAPI WinMain(HINSTANCE hInstance,		// Instance
 					KillGLWindow();			  // Kill Our Current Window
 					fullscreen = !fullscreen; // Toggle Fullscreen / Windowed Mode
 					// Recreate Our OpenGL Window
-					if (!CreateGLWindow("RagCam", 800, 600, 32, fullscreen))
+					if (!CreateGLWindow("RagCam", 1920, 1080, 32, fullscreen))
 					{
 						return 0; // Quit If Window Was Not Created
 					}

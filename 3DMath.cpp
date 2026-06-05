@@ -14,8 +14,7 @@
 
 #include "ro-common.h"
 #include "3DMath.h"
-#include <math.h>	// We include math.h so we can use the sqrt() function
-
+#include <math.h> // We include math.h so we can use the sqrt() function
 
 /////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
 
@@ -38,9 +37,9 @@
 // is the normal to a plane.  A plane is infinite, it goes on forever.  If you drew a triangle
 // in the middle of the piece of paper, the normal of that triangle would be the same as the paper,
 // so it doesn't matter does it?  That's why you are really getting a normal to the polygon's plane.
-// If you stuck the piece of paper straight up vertically, where would the normal be?  It would 
-// follow the paper perfectly as a 90 degree angle, so it would now we perfectly horizontal.  Now, 
-// depending on the order of your vertices, it could either being pointing out on one side of the paper, 
+// If you stuck the piece of paper straight up vertically, where would the normal be?  It would
+// follow the paper perfectly as a 90 degree angle, so it would now we perfectly horizontal.  Now,
+// depending on the order of your vertices, it could either being pointing out on one side of the paper,
 // or on the other side.  You just have to decide which order you want to use, then ALWAYS stick
 // with that.  Usually, you want to do something called back face culling which doesn't
 // draw the back of a polygon.  That way you aren't drawing twice as much as you could be.
@@ -56,16 +55,15 @@
 /////
 /////////////////////////////////////// NORMAL \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
-
 /////////////////////////////////////// CROSS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
 /////	This returns a perpendicular vector from 2 given vectors by taking the cross product.
 /////
 /////////////////////////////////////// CROSS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-												
+
 CVector3 Cross(CVector3 vVector1, CVector3 vVector2)
 {
-	CVector3 vNormal;	
+	CVector3 vNormal;
 
 	// Calculate the cross product with the non communitive equation
 	vNormal.x = ((vVector1.y * vVector2.z) - (vVector1.z * vVector2.y));
@@ -73,9 +71,8 @@ CVector3 Cross(CVector3 vVector1, CVector3 vVector2)
 	vNormal.z = ((vVector1.x * vVector2.y) - (vVector1.y * vVector2.x));
 
 	// Return the cross product
-	return vNormal;										 
+	return vNormal;
 }
-
 
 /////////////////////////////////////// MAGNITUDE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
@@ -86,9 +83,9 @@ CVector3 Cross(CVector3 vVector1, CVector3 vVector2)
 float Magnitude(CVector3 vNormal)
 {
 	// Here is the equation:  magnitude = sqrt(V.x^2 + V.y^2 + V.z^2) : Where V is the vector
-	return (float)sqrt( (vNormal.x * vNormal.x) + 
-						(vNormal.y * vNormal.y) + 
-						(vNormal.z * vNormal.z) );
+	return (float)sqrt((vNormal.x * vNormal.x) +
+					   (vNormal.y * vNormal.y) +
+					   (vNormal.z * vNormal.z));
 }
 
 /////////////////////////////////////// VECTOR \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
@@ -99,20 +96,19 @@ float Magnitude(CVector3 vNormal)
 
 CVector3 Vector(CVector3 vPoint1, CVector3 vPoint2)
 {
-	CVector3 vVector;								// Initialize our variable to zero
+	CVector3 vVector; // Initialize our variable to zero
 
 	// In order to get a vector from 2 points (a direction) we need to
 	// subtract the second point from the first point.
 
-	vVector.x = vPoint1.x - vPoint2.x;					// Get the X value of our new vector
-	vVector.y = vPoint1.y - vPoint2.y;					// Get the Y value of our new vector
-	vVector.z = vPoint1.z - vPoint2.z;					// Get the Z value of our new vector
+	vVector.x = vPoint1.x - vPoint2.x; // Get the X value of our new vector
+	vVector.y = vPoint1.y - vPoint2.y; // Get the Y value of our new vector
+	vVector.z = vPoint1.z - vPoint2.z; // Get the Z value of our new vector
 
 	// Now that we have our new vector between the 2 points, we will return it.
 
-	return vVector;										// Return our new vector
+	return vVector; // Return our new vector
 }
-
 
 /////////////////////////////////////// NORMALIZE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
@@ -123,21 +119,18 @@ CVector3 Vector(CVector3 vPoint1, CVector3 vPoint2)
 CVector3 Normalize(CVector3 vVector)
 {
 	// Get the magnitude of our normal
-	float magnitude = Magnitude(vVector);				
+	float magnitude = Magnitude(vVector);
 
 	// Now that we have the magnitude, we can divide our vector by that magnitude.
-	// That will make our vector a total length of 1.  
-	vVector = vVector / magnitude;		
-	
+	// That will make our vector a total length of 1.
+	vVector = vVector / magnitude;
+
 	// Finally, return our normalized vector
-	return vVector;										
+	return vVector;
 }
 
-
-
-
-CVector3 Normal(CVector3 vTriangle[])					// You might want to error check to make sure it's valid
-{														// Get 2 vectors from the polygon
+CVector3 Normal(CVector3 vTriangle[]) // You might want to error check to make sure it's valid
+{									  // Get 2 vectors from the polygon
 	CVector3 vVector1 = Vector(vTriangle[2], vTriangle[0]);
 	CVector3 vVector2 = Vector(vTriangle[1], vTriangle[0]);
 
@@ -158,7 +151,7 @@ CVector3 Normal(CVector3 vTriangle[])					// You might want to error check to ma
 	// normalizing.  To do this we divide the normal by it's magnitude.  Well how do we
 	// find it's magnitude? We use this equation: magnitude = sqrt(x^2 + y^2 + z^2)
 
-	vNormal = Normalize(vNormal);						// Use our function we created to normalize the normal (Makes it a length of one)
+	vNormal = Normalize(vNormal); // Use our function we created to normalize the normal (Makes it a length of one)
 
 	// Now return the normalized normal
 	// (*NOTE*) If you want to understand what normalizing our normal does, comment out
@@ -166,15 +159,14 @@ CVector3 Normal(CVector3 vTriangle[])					// You might want to error check to ma
 	// I strongly recommend this.  And remember, it doesn't matter how long the normal is,
 	// (of course besides (0, 0, 0)), if we normalize it, it will always be of length 1 afterwards.
 
-	return vNormal;										// Return our normal at our desired length
+	return vNormal; // Return our normal at our desired length
 }
 
 /////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
 
-
 /////////////////////////////////////////////////////////////////////////////////
 //
-// * QUICK NOTES * 
+// * QUICK NOTES *
 //
 // That how you find the normal to a polygon.  Pretty complicated huh? :)
 // well, the good thing about this is that once you code, you never have to do it
@@ -183,34 +175,34 @@ CVector3 Normal(CVector3 vTriangle[])					// You might want to error check to ma
 // see what I mean.  That is why we separated the math into a separate file, because
 // you will use the same code over and over in your applications.  I know I do.
 // I feel naked with out my gamemath.cpp :)
-// 
+//
 // Basically, let me explain the steps again to finding the normal of a polygon.
-// 
+//
 // 1)  First, if you have 3 points of a polygon, you can find a normal to that plane.
 //     The first step you need to do is get 2 vectors from that polygon.  That means
 //     that you need to pick to sides of the triangle (order is important) and subtract
 //     the points from each other to get the vector of that side.  When it comes to triangles,
 //     I usually get the first vector from Point3 - Point1. (V1 = P3 - P1)
-//     Next, I choose Vector 2 from Point2 and Point1 (V2 = P2 - P1).  
+//     Next, I choose Vector 2 from Point2 and Point1 (V2 = P2 - P1).
 //
-// 2)  Now that we have 2 vectors:  V1 and V2, we can take the cross product of those 
-//     2 vectors, with vector1 cross vector2.  Remember, the order is important.  
+// 2)  Now that we have 2 vectors:  V1 and V2, we can take the cross product of those
+//     2 vectors, with vector1 cross vector2.  Remember, the order is important.
 //     I always go counter-clockwise.  Pick and stick!  This is important because it decides the
 //     direction of the normal.  It doesn't matter which direction, as long as you do the same
 //     thing for all the rest of your polygons.  You don't want mixed up normal directions.
-// 
+//
 // 3)  Now we should have the normal (Or direction) from the cross product of our polygon.
 //     This normal has a strange length, so let's make the length (or distance from the origin) 1.
 //     To do this, we take the magnitude (Deals with the length of the vector) of the normal.
 //     With the magnitude, we divide the normal BY that magnitude.  That means the X, Y and Z values
 //     get divided by the magnitude scalar.  A scalar is a single number like 1, 1.232, etc...
-// 
+//
 // That's it!  Three basic steps to finding the normal.  It is nice not to have to worry about
 // all that once you have a function that does it all for you.  We call ours "Normal()".  It
 // won't matter it we have a polygon of 20 vertices, all we need is just 3 points (the first 3)
 // from that polygon.  That is enough to define a plane.  Then we find the normal to that plane.
 //
-// 
+//
 // I hope this help!  Let us know at www.GameTutorials.com if this helped you at all.
 //
 // Good luck, and get ready for the collision tutorial next!

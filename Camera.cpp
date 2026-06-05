@@ -12,20 +12,18 @@
 //																		 //
 //***********************************************************************//
 
-#pragma comment(lib, "winmm.lib")						// Added for timeGetTime()
+#pragma comment(lib, "winmm.lib") // Added for timeGetTime()
 
 #include "ro-common.h"
 #include "3dMath.h"
 #include "Camera.h"
 
-
 // We increased the speed a bit from the Camera Strafing Tutorial
 // This is how fast our camera moves
-#define kSpeed	50.0f									
+#define kSpeed 50.0f
 
 // Our global float that stores the elapsed time between the current and last frame
 float g_FrameInterval = 0.0f;
-
 
 ///////////////////////////////// CALCULATE FRAME RATE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
@@ -35,46 +33,45 @@ float g_FrameInterval = 0.0f;
 
 void CalculateFrameRate()
 {
-	static float framesPerSecond    = 0.0f;		// This will store our fps
-    static float lastTime			= 0.0f;		// This will hold the time from the last frame
-	static char strFrameRate[50] = {0};			// We will store the string here for the window title
+	static float framesPerSecond = 0.0f; // This will store our fps
+	static float lastTime = 0.0f;		 // This will hold the time from the last frame
+	static char strFrameRate[50] = {0};	 // We will store the string here for the window title
 
-	static float frameTime = 0.0f;				// This stores the last frame's time
+	static float frameTime = 0.0f; // This stores the last frame's time
 
 	// Get the current time in seconds
-    float currentTime = timeGetTime() * 0.001f;				
+	float currentTime = timeGetTime() * 0.001f;
 
 	// Here we store the elapsed time between the current and last frame,
 	// then keep the current frame in our static variable for the next frame.
- 	g_FrameInterval = currentTime - frameTime;
+	g_FrameInterval = currentTime - frameTime;
 	frameTime = currentTime;
 
 	// Increase the frame counter
-    ++framesPerSecond;
+	++framesPerSecond;
 
 	// Now we want to subtract the current time by the last time that was stored
 	// to see if the time elapsed has been over a second, which means we found our FPS.
-    if( currentTime - lastTime > 1.0f )
-    {
+	if (currentTime - lastTime > 1.0f)
+	{
 		// Here we set the lastTime to the currentTime
-	    lastTime = currentTime;
-		
+		lastTime = currentTime;
+
 		// Copy the frames per second into a string to display in the window title bar
 		sprintf(strFrameRate, "Current Frames Per Second: %d", int(framesPerSecond));
 
-
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
+		/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
 
 		// Commented out for this tutorialwwwwwwwwww
 
 		// Set the window title bar to our string
-		//SetWindowText(g_hWnd, strFrameRate);
+		// SetWindowText(g_hWnd, strFrameRate);
 
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
+		/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
 
 		// Reset the frames per second
-        framesPerSecond = 0;
-    }
+		framesPerSecond = 0;
+	}
 }
 
 ///////////////////////////////// CCAMERA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
@@ -85,15 +82,14 @@ void CalculateFrameRate()
 
 CCamera::CCamera()
 {
-	CVector3 vZero = CVector3(0.0, 0.0, 0.0);		// Init a vector to 0 0 0 for our position
-	CVector3 vView = CVector3(0.0, 1.0, 0.5);		// Init a starting view vector (looking up and out the screen) 
-	CVector3 vUp   = CVector3(0.0, 0.0, 1.0);		// Init a standard up vector (Rarely ever changes)
+	CVector3 vZero = CVector3(0.0, 0.0, 0.0); // Init a vector to 0 0 0 for our position
+	CVector3 vView = CVector3(0.0, 1.0, 0.5); // Init a starting view vector (looking up and out the screen)
+	CVector3 vUp = CVector3(0.0, 0.0, 1.0);	  // Init a standard up vector (Rarely ever changes)
 
-	m_vPosition	= vZero;					// Init the position to zero
-	m_vView		= vView;					// Init the view to a std starting view
-	m_vUpVector	= vUp;						// Init the UpVector
+	m_vPosition = vZero; // Init the position to zero
+	m_vView = vView;	 // Init the view to a std starting view
+	m_vUpVector = vUp;	 // Init the UpVector
 }
-
 
 ///////////////////////////////// POSITION CAMERA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
@@ -102,21 +98,20 @@ CCamera::CCamera()
 ///////////////////////////////// POSITION CAMERA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
 void CCamera::PositionCamera(float positionX, float positionY, float positionZ,
-				  		     float viewX,     float viewY,     float viewZ,
+							 float viewX, float viewY, float viewZ,
 							 float upVectorX, float upVectorY, float upVectorZ)
 {
-	CVector3 vPosition	= CVector3(positionX, positionY, positionZ);
-	CVector3 vView		= CVector3(viewX, viewY, viewZ);
-	CVector3 vUpVector	= CVector3(upVectorX, upVectorY, upVectorZ);
+	CVector3 vPosition = CVector3(positionX, positionY, positionZ);
+	CVector3 vView = CVector3(viewX, viewY, viewZ);
+	CVector3 vUpVector = CVector3(upVectorX, upVectorY, upVectorZ);
 
 	// The code above just makes it cleaner to set the variables.
 	// Otherwise we would have to set each variable x y and z.
 
-	m_vPosition = vPosition;					// Assign the position
-	m_vView     = vView;						// Assign the view
-	m_vUpVector = vUpVector;					// Assign the up vector
+	m_vPosition = vPosition; // Assign the position
+	m_vView = vView;		 // Assign the view
+	m_vUpVector = vUpVector; // Assign the up vector
 }
-
 
 ///////////////////////////////// SET VIEW BY MOUSE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
@@ -126,36 +121,37 @@ void CCamera::PositionCamera(float positionX, float positionY, float positionZ,
 
 void CCamera::SetViewByMouse()
 {
-	POINT mousePos;			// This is a window structure that holds an X and Y
-	
-	int middleX = 800 >> 1;				// This is a binary shift to get half the width
-	int middleY = 600 >> 1;				// This is a binary shift to get half the height
-	float angleY = 0.0f;							// This is the direction for looking up or down
-	float angleZ = 0.0f;							// This will be the value we need to rotate around the Y axis (Left and Right)
+	POINT mousePos; // This is a window structure that holds an X and Y
+
+	int middleX = 800 >> 1; // This is a binary shift to get half the width
+	int middleY = 600 >> 1; // This is a binary shift to get half the height
+	float angleY = 0.0f;	// This is the direction for looking up or down
+	float angleZ = 0.0f;	// This will be the value we need to rotate around the Y axis (Left and Right)
 	static float currentRotX = 0.0f;
-	
+
 	// Get the mouse's current X,Y position
-	GetCursorPos(&mousePos);						
-	
+	GetCursorPos(&mousePos);
+
 	// If our cursor is still in the middle, we never moved... so don't update the screen
-	if( (mousePos.x == middleX) && (mousePos.y == middleY) ) return;
+	if ((mousePos.x == middleX) && (mousePos.y == middleY))
+		return;
 
 	// Set the mouse position to the middle of our window
-	SetCursorPos(middleX, middleY);							
+	SetCursorPos(middleX, middleY);
 
 	// Get the direction the mouse moved in, but bring the number down to a reasonable amount
-	angleY = (float)( (middleX - mousePos.x) ) / 500.0f;		
-	angleZ = (float)( (middleY - mousePos.y) ) / 500.0f;		
+	angleY = (float)((middleX - mousePos.x)) / 500.0f;
+	angleZ = (float)((middleY - mousePos.y)) / 500.0f;
 
 	// Here we keep track of the current rotation (for up and down) so that
 	// we can restrict the camera from doing a full 360 loop.
-	currentRotX -= angleZ;  
+	currentRotX -= angleZ;
 
 	// If the current rotation (in radians) is greater than 1.0, we want to cap it.
-	if(currentRotX > 1.0f)
+	if (currentRotX > 1.0f)
 		currentRotX = 1.0f;
 	// Check if the rotation is below -1.0, if so we want to make sure it doesn't continue
-	else if(currentRotX < -1.0f)
+	else if (currentRotX < -1.0f)
 		currentRotX = -1.0f;
 	// Otherwise, we can rotate the view around our position
 	else
@@ -174,7 +170,6 @@ void CCamera::SetViewByMouse()
 	RotateView(angleY, 0, 1, 0);
 }
 
-
 ///////////////////////////////// ROTATE VIEW \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
 /////	This rotates the view around the position using an axis-angle rotation
@@ -186,32 +181,31 @@ void CCamera::RotateView(float angle, float x, float y, float z)
 	CVector3 vNewView;
 
 	// Get the view vector (The direction we are facing)
-	CVector3 vView = m_vView - m_vPosition;		
+	CVector3 vView = m_vView - m_vPosition;
 
 	// Calculate the sine and cosine of the angle once
 	float cosTheta = (float)cos(angle);
 	float sinTheta = (float)sin(angle);
 
 	// Find the new x position for the new rotated point
-	vNewView.x  = (cosTheta + (1 - cosTheta) * x * x)		* vView.x;
-	vNewView.x += ((1 - cosTheta) * x * y - z * sinTheta)	* vView.y;
-	vNewView.x += ((1 - cosTheta) * x * z + y * sinTheta)	* vView.z;
+	vNewView.x = (cosTheta + (1 - cosTheta) * x * x) * vView.x;
+	vNewView.x += ((1 - cosTheta) * x * y - z * sinTheta) * vView.y;
+	vNewView.x += ((1 - cosTheta) * x * z + y * sinTheta) * vView.z;
 
 	// Find the new y position for the new rotated point
-	vNewView.y  = ((1 - cosTheta) * x * y + z * sinTheta)	* vView.x;
-	vNewView.y += (cosTheta + (1 - cosTheta) * y * y)		* vView.y;
-	vNewView.y += ((1 - cosTheta) * y * z - x * sinTheta)	* vView.z;
+	vNewView.y = ((1 - cosTheta) * x * y + z * sinTheta) * vView.x;
+	vNewView.y += (cosTheta + (1 - cosTheta) * y * y) * vView.y;
+	vNewView.y += ((1 - cosTheta) * y * z - x * sinTheta) * vView.z;
 
 	// Find the new z position for the new rotated point
-	vNewView.z  = ((1 - cosTheta) * x * z - y * sinTheta)	* vView.x;
-	vNewView.z += ((1 - cosTheta) * y * z + x * sinTheta)	* vView.y;
-	vNewView.z += (cosTheta + (1 - cosTheta) * z * z)		* vView.z;
+	vNewView.z = ((1 - cosTheta) * x * z - y * sinTheta) * vView.x;
+	vNewView.z += ((1 - cosTheta) * y * z + x * sinTheta) * vView.y;
+	vNewView.z += (cosTheta + (1 - cosTheta) * z * z) * vView.z;
 
 	// Now we just add the newly rotated vector to our position to set
 	// our new rotated view of our camera.
 	m_vView = m_vPosition + vNewView;
 }
-
 
 ///////////////////////////////// STRAFE CAMERA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
@@ -220,7 +214,7 @@ void CCamera::RotateView(float angle, float x, float y, float z)
 ///////////////////////////////// STRAFE CAMERA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
 void CCamera::StrafeCamera(float speed)
-{	
+{
 	// Add the strafe vector to our position
 	m_vPosition.x += m_vStrafe.x * speed;
 	m_vPosition.z += m_vStrafe.z * speed;
@@ -229,7 +223,6 @@ void CCamera::StrafeCamera(float speed)
 	m_vView.x += m_vStrafe.x * speed;
 	m_vView.z += m_vStrafe.z * speed;
 }
-
 
 ///////////////////////////////// MOVE CAMERA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
@@ -243,14 +236,13 @@ void CCamera::MoveCamera(float speed)
 	CVector3 vVector = m_vView - m_vPosition;
 	vVector = Normalize(vVector);
 
-	m_vPosition.x += vVector.x * speed;		// Add our acceleration to our position's X
-	m_vPosition.y += vVector.y * speed;		// Add our acceleration to our position's Y
-	m_vPosition.z += vVector.z * speed;		// Add our acceleration to our position's Z
-	m_vView.x += vVector.x * speed;			// Add our acceleration to our view's X
-	m_vView.y += vVector.y * speed;			// Add our acceleration to our view's Y
-	m_vView.z += vVector.z * speed;			// Add our acceleration to our view's Z
+	m_vPosition.x += vVector.x * speed; // Add our acceleration to our position's X
+	m_vPosition.y += vVector.y * speed; // Add our acceleration to our position's Y
+	m_vPosition.z += vVector.z * speed; // Add our acceleration to our position's Z
+	m_vView.x += vVector.x * speed;		// Add our acceleration to our view's X
+	m_vView.y += vVector.y * speed;		// Add our acceleration to our view's Y
+	m_vView.z += vVector.z * speed;		// Add our acceleration to our view's Z
 }
-
 
 //////////////////////////// CHECK FOR MOVEMENT \\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
@@ -259,39 +251,42 @@ void CCamera::MoveCamera(float speed)
 //////////////////////////// CHECK FOR MOVEMENT \\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
 void CCamera::CheckForMovement()
-{	
+{
 	// Once we have the frame interval, we find the current speed
 	float speed = kSpeed * g_FrameInterval;
 
 	// Check if we hit the Up arrow or the 'w' key
-	if(GetKeyState(VK_UP) & 0x80 || GetKeyState('W') & 0x80) {				
+	if (GetKeyState(VK_UP) & 0x80 || GetKeyState('W') & 0x80)
+	{
 
 		// Move our camera forward by a positive SPEED
-		MoveCamera(speed);				
+		MoveCamera(speed);
 	}
 
 	// Check if we hit the Down arrow or the 's' key
-	if(GetKeyState(VK_DOWN) & 0x80 || GetKeyState('S') & 0x80) {			
+	if (GetKeyState(VK_DOWN) & 0x80 || GetKeyState('S') & 0x80)
+	{
 
 		// Move our camera backward by a negative SPEED
-		MoveCamera(-speed);				
+		MoveCamera(-speed);
 	}
 
 	// Check if we hit the Left arrow or the 'a' key
-	if(GetKeyState(VK_LEFT) & 0x80 || GetKeyState('A') & 0x80) {			
+	if (GetKeyState(VK_LEFT) & 0x80 || GetKeyState('A') & 0x80)
+	{
 
 		// Strafe the camera left
 		StrafeCamera(-speed);
 	}
 
 	// Check if we hit the Right arrow or the 'd' key
-	if(GetKeyState(VK_RIGHT) & 0x80 || GetKeyState('D') & 0x80) {			
+	if (GetKeyState(VK_RIGHT) & 0x80 || GetKeyState('D') & 0x80)
+	{
 
 		// Strafe the camera right
 		StrafeCamera(speed);
-	}	
+	}
 }
-
 
 ///////////////////////////////// UPDATE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
@@ -299,7 +294,7 @@ void CCamera::CheckForMovement()
 /////
 ///////////////////////////////// UPDATE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
-void CCamera::Update() 
+void CCamera::Update()
 {
 	// Initialize a variable for the cross product result
 	CVector3 vCross = Cross(m_vView - m_vPosition, m_vUpVector);
@@ -310,8 +305,7 @@ void CCamera::Update()
 	// Move the camera's view by the mouse
 	SetViewByMouse();
 
-
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
+	/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
 
 	// We commented this line out so the camera can't move around
 	// in this tutorial.
@@ -319,32 +313,29 @@ void CCamera::Update()
 	// This checks to see if the keyboard was pressed
 	CheckForMovement();
 
-/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
-	
+	/////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
 
 	// Calculate our frame rate and set our frame interval for time-based movement
 	CalculateFrameRate();
 }
 
-
 ///////////////////////////////// LOOK \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
-/////	This updates the camera according to the 
+/////	This updates the camera according to the
 /////
 ///////////////////////////////// LOOK \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
 void CCamera::Look()
 {
 	// Give openGL our camera position, then camera view, then camera up vector
-	gluLookAt(m_vPosition.x, m_vPosition.y, m_vPosition.z,	
-			  m_vView.x,	 m_vView.y,     m_vView.z,	
+	gluLookAt(m_vPosition.x, m_vPosition.y, m_vPosition.z,
+			  m_vView.x, m_vView.y, m_vView.z,
 			  m_vUpVector.x, m_vUpVector.y, m_vUpVector.z);
 }
 
-
 /////////////////////////////////////////////////////////////////////////////////
 //
-// * QUICK NOTES * 
+// * QUICK NOTES *
 //
 // Nothing was changed for the camera code in this tutorial except that
 // we commented out the line that checks for keyboard movement in Update().

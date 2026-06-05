@@ -12,13 +12,12 @@
 
 // This is used to hold 3D points and vectors. This class is also used in our camera
 // tutorials.  Please refer back to those for more information.  Basically, we just
-// want a class that holds 3 floats for our x, y, and z values.  This will be added upon later. 
-//struct CVector3
+// want a class that holds 3 floats for our x, y, and z values.  This will be added upon later.
+// struct CVector3
 //{
-//public:
-//	float x, y, z;						
+// public:
+//	float x, y, z;
 //};
-
 
 //	This returns a perpendicular vector from 2 given vectors by taking the cross product.
 CVector3 Cross(CVector3 vVector1, CVector3 vVector2);
@@ -37,19 +36,18 @@ CVector3 Normal(CVector3 vTriangle[]);
 
 /////// * /////////// * /////////// * NEW * /////// * /////////// * /////////// *
 
-#endif 
-
+#endif
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-// * QUICK NOTES * 
+// * QUICK NOTES *
 //
 // We can now use our 3DMath.cpp and 3DMath.h in any project now by simple
 // including it.  We will want at least ALL of these functions from now on
 // when ever we do any 3D programming (except for basic OpenGL concepts).
 // It is important to know how to use these, even if you don't know how to
 // code them if you had to.  As long as you know WHAT they do and what they are
-// for, that's a start.  To be a decent 3D programmer though, you have to have 
+// for, that's a start.  To be a decent 3D programmer though, you have to have
 // this stuff down pretty well where you want have to think about instances when you
 // would use them.  If you need a perpendicular vector for something, like to strafe
 // the camera left and right, you should immediately think CROSS PRODUCT.
@@ -66,5 +64,3 @@ CVector3 Normal(CVector3 vTriangle[]);
 // www.GameTutorials.com
 //
 //
-
-

@@ -13,7 +13,8 @@
 
 typedef unsigned char ro_lightmap_t[256];
 
-typedef struct {
+typedef struct
+{
 	float u1;
 	float u2;
 	float u3;
@@ -29,7 +30,8 @@ typedef struct {
 	int todo;
 } ro_tile_t;
 
-typedef struct {
+typedef struct
+{
 	float y1;
 	float y2;
 	float y3;
@@ -39,17 +41,18 @@ typedef struct {
 	int tileside;
 } ro_cube_t;
 
-typedef struct {
+typedef struct
+{
 	char filecode[4];
 	short magicnumber;
 } gnd_header_t;
 
-class GND  
+class GND
 {
 public:
 	GND();
-	bool GRFLoad (Grf *grffile, char *filename, bool extract = FALSE);
-	bool Load (char *ragnapath, char *filename);
+	bool GRFLoad(Grf *grffile, char *filename, bool extract = FALSE);
+	bool Load(char *ragnapath, char *filename);
 	void LoadWater(char *ragnapath, int type);
 	void Display(CFrustum *g_Frustum);
 	void DisplayWater(int frameno, float wavephase, float waterlevel, CFrustum *g_Frustum);

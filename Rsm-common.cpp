@@ -12,12 +12,14 @@ int data_status(int *offset, unsigned char *p)
 	*offset += sizeof(char) * 4;
 
 	for (i = 0; i < 4; i++)
-		if (c[i] != 0) {
+		if (c[i] != 0)
+		{
 			bfin = false;
 			break;
 		}
 
-	if (!bfin) {
+	if (!bfin)
+	{
 		*offset = pos;
 		return 2;
 	}
@@ -27,15 +29,18 @@ int data_status(int *offset, unsigned char *p)
 	*offset += sizeof(char) * 4;
 
 	for (i = 0; i < 4; i++)
-		if (c[i] != 0) {
+		if (c[i] != 0)
+		{
 			bfin = false;
 			break;
 		}
 
-	if (!bfin) {
+	if (!bfin)
+	{
 		*offset = pos;
 		return 1;
-	} else
+	}
+	else
 		return 0;
 }
 
@@ -47,36 +52,39 @@ int file_status(FILE *fp)
 	long pos;
 
 	pos = ftell(fp);
-	fread (c, sizeof(char), 4, fp);
+	fread(c, sizeof(char), 4, fp);
 
 	for (i = 0; i < 4; i++)
-		if (c[i] != 0) {
+		if (c[i] != 0)
+		{
 			bfin = false;
 			break;
 		}
 
-	if (!bfin) {
-		fseek (fp, pos, SEEK_SET);
+	if (!bfin)
+	{
+		fseek(fp, pos, SEEK_SET);
 		return 2;
 	}
 
 	pos = ftell(fp);
-	fread (c, sizeof(char), 4, fp);
+	fread(c, sizeof(char), 4, fp);
 
 	for (i = 0; i < 4; i++)
-		if (c[i] != 0) {
+		if (c[i] != 0)
+		{
 			bfin = false;
 			break;
 		}
 
-	if (!bfin) {
-		fseek (fp, pos, SEEK_SET);
+	if (!bfin)
+	{
+		fseek(fp, pos, SEEK_SET);
 		return 1;
-	} else
+	}
+	else
 		return 0;
 }
-
-
 
 void DisplayBoundingBox(GLfloat *max, GLfloat *min,
 						GLfloat r, GLfloat g, GLfloat b)
@@ -84,22 +92,22 @@ void DisplayBoundingBox(GLfloat *max, GLfloat *min,
 	glDisable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
 	glColor4f(r, g, b, 0.75);
-	
+
 	glVertex3f(min[0], min[1], max[2]);
 	glVertex3f(min[0], max[1], max[2]);
 	glVertex3f(max[0], max[1], max[2]);
 	glVertex3f(max[0], min[1], max[2]);
-	
+
 	glVertex3f(max[0], max[1], min[2]);
 	glVertex3f(min[0], max[1], min[2]);
 	glVertex3f(min[0], min[1], min[2]);
 	glVertex3f(max[0], min[1], min[2]);
-	
+
 	glVertex3f(max[0], max[1], max[2]);
 	glVertex3f(max[0], min[1], max[2]);
 	glVertex3f(max[0], min[1], min[2]);
 	glVertex3f(max[0], max[1], min[2]);
-	
+
 	glVertex3f(min[0], max[1], max[2]);
 	glVertex3f(min[0], min[1], max[2]);
 	glVertex3f(min[0], min[1], min[2]);

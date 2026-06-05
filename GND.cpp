@@ -206,7 +206,7 @@ bool GND::GRFLoad(Grf *grffile, char *filename, bool extract)
 	lightmaps = new ro_lightmap_t[nlightmaps];
 
 	// Water hack!!!
-	//LoadWater("C:\\Program Files\\Gravity\\RagnarokOnline\\", 0);
+	// LoadWater("C:\\Program Files\\Gravity\\RagnarokOnline\\", 0);
 
 	memcpy(lightmaps, &GNDData[offset], sizeof(ro_lightmap_t) * nlightmaps);
 	offset += sizeof(ro_lightmap_t) * nlightmaps;

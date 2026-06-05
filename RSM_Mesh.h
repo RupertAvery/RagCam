@@ -11,7 +11,7 @@
 
 #include "Rsm-common.h"
 
-class RSM_Mesh  
+class RSM_Mesh
 {
 public:
 	RSM_Mesh();
@@ -19,33 +19,30 @@ public:
 	bool Load(FILE *fp, GLuint *all_textures, bool *alphatex, bool main);
 	void Save(FILE *fp, bool main);
 	void Display(bounding_box_t *box, ro_transf_t *ptransf = NULL);
-	void BoundingBox(ro_transf_t *ptransf=NULL);
+	void BoundingBox(ro_transf_t *ptransf = NULL);
 	void CalcNormals();
 	virtual ~RSM_Mesh();
 	GLfloat range[3];
 	GLfloat min[3];
 	GLfloat max[3];
 
-	int numverts()  { return npos_vtx;   }
-	int numtverts() { return ntex_vtx;   }
+	int numverts() { return npos_vtx; }
+	int numtverts() { return ntex_vtx; }
 	int numfaces() { return nall_faces; }
 	int numframes() { return nframes; }
 	ro_frame_t getframe(int i) { return frames[i]; }
 
-	ro_string_t	name;
+	ro_string_t name;
 	ro_string_t parent_name;
 
 	ro_transf_t transf;
 	ro_vertex_t *pos_vtx;
 	ro_vertex_t *nrm_vtx;
 
-
-
 	bool only;
 	bool drawbounds;
 
 private:
-
 private:
 	int nstep;
 	int todo;

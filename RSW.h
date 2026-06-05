@@ -13,8 +13,8 @@
 #include "Rsm.h"
 #include "GND.h"
 
-
-typedef struct {
+typedef struct
+{
 	int model;
 	ro_string_t filepath;
 	char unknown1[120];
@@ -22,27 +22,27 @@ typedef struct {
 	ro_position_t position;
 } ro_model_t;
 
-class RSW  
+class RSW
 {
 public:
 	RSW();
 	virtual ~RSW();
 
 	GLuint maptex;
-	GLint  hits;	
-	char mapname[32];	
-	bool GRFLoad (Grf *grffile, char *filename, HWND window=NULL, bool extract = FALSE);
-	bool Load (char *ragnapath, char *filename, HWND window=NULL);
+	GLint hits;
+	char mapname[32];
+	bool GRFLoad(Grf *grffile, char *filename, HWND window = NULL, bool extract = FALSE);
+	bool Load(char *ragnapath, char *filename, HWND window = NULL);
 	bool Save(char *ragnapath);
 	void Display(float waterlevel, CFrustum *g_Frustum);
 	void PickObject(CFrustum *g_Frustum);
 	ro_model_t *SelectedModel();
 	RSM *getRealModel(int n) { return &realmodels[n]; };
-	
+
 	bool selectobject;
 
-	int getWidth() { return(ground.sizeX); }
-	int getHeight() { return(ground.sizeY); }
+	int getWidth() { return (ground.sizeX); }
+	int getHeight() { return (ground.sizeY); }
 	int nummodels() { return nmodels; };
 	int numrealmodels() { return nrealmodels; };
 
@@ -68,7 +68,6 @@ private:
 	RSM *realmodels;
 	GND ground;
 	bool *bexist;
-
 };
 
 #endif // !defined(AFX_RSW_H__42D932D9_0C27_4AA9_98E1_9C50045FE9CD__INCLUDED_)

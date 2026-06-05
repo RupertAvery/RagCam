@@ -417,6 +417,7 @@ void RSM::Display(ro_position_t pos)
 	vBox[6] = MatrixMultVect3f(Mat, box.max[0], box.max[1], box.max[2]);
 	vBox[7] = MatrixMultVect3f(Mat, box.min[0], box.max[1], box.max[2]);
 
+	/*
 	if (g_Frustum.PointInFrustum(vBox[0].x, vBox[0].y, vBox[0].z) | g_Frustum.PointInFrustum(vBox[1].x, vBox[1].y, vBox[1].z) | g_Frustum.PointInFrustum(vBox[2].x, vBox[2].y, vBox[2].z) | g_Frustum.PointInFrustum(vBox[3].x, vBox[3].y, vBox[3].z) | g_Frustum.PointInFrustum(vBox[4].x, vBox[4].y, vBox[4].z) | g_Frustum.PointInFrustum(vBox[5].x, vBox[5].y, vBox[5].z) | g_Frustum.PointInFrustum(vBox[6].x, vBox[6].y, vBox[6].z) | g_Frustum.PointInFrustum(vBox[7].x, vBox[7].y, vBox[7].z))
 	// if (  g_Frustum.PointInFrustum(pos.x, pos.y, pos.z))
 	{
@@ -467,6 +468,7 @@ void RSM::Display(ro_position_t pos)
 
 		glPopMatrix();
 	}
+	*/
 
 	DisplayMesh(&box, 0);
 
@@ -484,6 +486,7 @@ void RSM::DisplayMesh(bounding_box_t *b, int n, ro_transf_t *ptransf)
 		{
 			DisplayMesh((n == 0) ? b : NULL, i, &meshes[n].transf);
 		}
+		
 	glPopMatrix();
 }
 

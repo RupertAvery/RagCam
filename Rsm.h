@@ -12,7 +12,7 @@
 #include "Rsm-common.h"
 #include "RSM_Mesh.h"
 
-class RSM  
+class RSM
 {
 public:
 	RSM();
@@ -20,16 +20,16 @@ public:
 	bool Load(char *ragnapath, char *filename);
 	void Save(char *filename);
 	void Display(ro_position_t pos);
-	void DisplayMesh(bounding_box_t *b, int n, ro_transf_t *ptransf=NULL);
+	void DisplayMesh(bounding_box_t *b, int n, ro_transf_t *ptransf = NULL);
 	void DrawAxes(ro_position_t pos);
 
 	virtual ~RSM();
 	bounding_box_t box;
 	char modelfname[512];
-	int getNumMeshes() {return nmeshes;}
-	RSM_Mesh* getMesh(int i) {return &meshes[i];}
+	int getNumMeshes() { return nmeshes; }
+	RSM_Mesh *getMesh(int i) { return &meshes[i]; }
 	bool isSelected;
-	
+
 	GLfloat tmp;
 
 private:

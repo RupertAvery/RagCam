@@ -18,7 +18,7 @@ float w_FrameInterval = 0.0f;
 RSW::RSW()
 {
 	selected = -1;
-	frustumculling = TRUE;
+	frustumculling = FALSE;
 }
 
 RSW::~RSW()
