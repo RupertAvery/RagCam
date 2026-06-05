@@ -140,15 +140,18 @@ bool LoadGRFTexture(Grf *grfFile, char *filename, GLuint texture, bool *alpha, b
 
 			dataptr = 54 + sizeof(rgb) * numcol;
 
+			// BMP rows are padded to a 4-byte boundary; the source row stride is
+			// not w but w rounded up to a multiple of 4. Using w drifts each row
+			// for non-multiple-of-4 widths, which mis-maps atlas regions.
+			int srcStride = (w + 3) & ~3;
 			ndata = (unsigned char *)malloc(sizeof(unsigned char) * 4 * h * w);
 			for (j = 0; j < h; j++)
 				for (k = 0; k < w; k++)
 				{
-					unsigned char r, g, b;
-
-					r = (int)lut[data[dataptr + k + (h - 1 - j) * w]][0];
-					g = (int)lut[data[dataptr + k + (h - 1 - j) * w]][1];
-					b = (int)lut[data[dataptr + k + (h - 1 - j) * w]][2];
+					unsigned char idx = data[dataptr + k + (h - 1 - j) * srcStride];
+					unsigned char r = (int)lut[idx][0];
+					unsigned char g = (int)lut[idx][1];
+					unsigned char b = (int)lut[idx][2];
 
 					if (g == 0 && r > 253 && b > 253)
 					{
@@ -174,21 +177,22 @@ bool LoadGRFTexture(Grf *grfFile, char *filename, GLuint texture, bool *alpha, b
 			unsigned long dataoffset;
 			dataoffset = getlong(&data[10]);
 			cdata = (unsigned char *)&data[dataoffset];
+			// BMP rows are padded to a 4-byte boundary (3*w rounded up to mult of 4).
+			int srcStride = (w * 3 + 3) & ~3;
 			ndata = (unsigned char *)malloc(sizeof(unsigned char) * 4 * h * w);
 
 			for (j = 0; j < h; j++)
 				for (k = 0; k < w; k++)
 				{
-					unsigned char r, g, b;
+					unsigned char *src = cdata + (h - 1 - j) * srcStride + k * 3;
+					unsigned char b = src[0]; // BMP stores BGR
+					unsigned char g = src[1];
+					unsigned char r = src[2];
 
-					r = coord3(cdata, k, h - 1 - j, 0);
-					g = coord3(cdata, k, h - 1 - j, 1);
-					b = coord3(cdata, k, h - 1 - j, 2);
-
-					if (g == 0 && r > 253 && b > 253)
+					if (r > 253 && g == 0 && b > 253)
 					{
-						// Zero RGB on transparent pixels so bilinear filtering
-						// blends toward black rather than bleeding magenta into edges
+						// magenta colour-key -> transparent; zero RGB so bilinear
+						// filtering blends toward black rather than bleeding magenta
 						ndata[4 * (j * w + k)] = 0;
 						ndata[4 * (j * w + k) + 1] = 0;
 						ndata[4 * (j * w + k) + 2] = 0;
@@ -196,9 +200,9 @@ bool LoadGRFTexture(Grf *grfFile, char *filename, GLuint texture, bool *alpha, b
 					}
 					else
 					{
-						ndata[4 * (j * w + k)] = b;
+						ndata[4 * (j * w + k)] = r;
 						ndata[4 * (j * w + k) + 1] = g;
-						ndata[4 * (j * w + k) + 2] = r;
+						ndata[4 * (j * w + k) + 2] = b;
 						ndata[4 * (j * w + k) + 3] = 255;
 					}
 				}
