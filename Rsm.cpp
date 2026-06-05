@@ -394,22 +394,15 @@ void RSM::Display(ro_position_t pos)
 	// Z offset of -10 aligns with GRFEditor's tile-zero origin.
 	glTranslatef(pos.x, -pos.y, pos.z - 10.0f);
 
-	glRotatef(pos.rx, 1.0f, 0.0f, 0.0f);
-	glRotatef(pos.ry, 0.0f, 1.0f, 0.0f);
-	glRotatef(pos.rz, 0.0f, 0.0f, 1.0f);
+	glRotatef(-pos.rz, 0.0f, 0.0f, 1.0f);
+	glRotatef(-pos.rx, 1.0f, 0.0f, 0.0f);
+	glRotatef( pos.ry, 0.0f, 1.0f, 0.0f);
 
 	glScalef(pos.sx, -pos.sy, pos.sz);
 
 	// GRFEditor v1.x: innermost RSW transform centres the RSM geometry.
 	// box.min[1] aligns the model's lowest vertex with the RSW anchor point.
 	glTranslatef(-box.range[0], box.min[1], -box.range[2]);
-
-	if (!meshes[0].only)
-		glTranslatef(-box.range[0], -box.max[1], -box.range[2]);
-	else
-		glTranslatef(0.0f, -box.max[1] + box.range[1], 0.0f);
-
-	glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);	// RSM models are Z-up; rotate to OpenGL Y-up
 
 	glGetFloatv(GL_MODELVIEW_MATRIX, &Mat[0]);
 
