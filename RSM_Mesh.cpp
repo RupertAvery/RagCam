@@ -417,8 +417,11 @@ void RSM_Mesh::Display(bounding_box_t *box, ro_transf_t *ptransf)
 
 	glPushMatrix();
 
-	glMultMatrixf(Rot);												// 3x3 TransformationMatrix
+	// Matrix2 (row-vector) = TransformationMatrix * T(LocalPosition): the vertex is hit by
+	// TransformationMatrix FIRST. In column-vector GL that means it must be the innermost
+	// (last) multiply, so LocalPosition is applied before it.
 	glTranslatef(transf.todo[9], transf.todo[10], transf.todo[11]); // T(LocalPosition)
+	glMultMatrixf(Rot);												// 3x3 TransformationMatrix (innermost)
 
 	// Batch faces by texture to minimise glBegin/glEnd and state-change calls.
 	// Within a batch, glNormal3f is set per triangle (valid in immediate mode).
