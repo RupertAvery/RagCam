@@ -392,34 +392,28 @@ void RSM_Mesh::Display(bounding_box_t *box, ro_transf_t *ptransf)
 	}
 
 
-	glScalef (transf.todo[19], transf.todo[20], transf.todo[21]);
+	// ---- Matrix1: structural transform — children inherit everything up to glPushMatrix ----
+	// GRFEditor CalcMatrix1 order for v1.x: T(GlobalPos) * R(angle) * S(scale)
 
-	glMultMatrixf(Rot);
-
-	if (main)
-		if (!only) {
-			glTranslatef(-box->range[0], -box->max[1], -box->range[2]);
-		} else {
-			glTranslatef(0.0, -box->max[1]+box->range[1], 0.0);
-		}
-
-	if (!main)	
-		glTranslatef(transf.todo[12], transf.todo[13], transf.todo[14]);
+	// T(GlobalPosition) — same for root and children; RSM centering is handled by RSM::Display
+	glTranslatef(transf.todo[12], transf.todo[13], transf.todo[14]);
 
 	if (!nframes)
-		glRotatef(transf.todo[15]*180.0/3.14159,
-			transf.todo[16], transf.todo[17], transf.todo[18]);
+		glRotatef(transf.todo[15] * 180.0f / 3.14159f,
+			transf.todo[16], transf.todo[17], transf.todo[18]);          // R(GlobalRotationAngle)
 	else
-		glMultMatrixf(Ori);
+		glMultMatrixf(Ori);                                              // R from keyframe quaternion
 
+	glScalef(transf.todo[19], transf.todo[20], transf.todo[21]);        // S(GlobalScale)
+
+	// ---- Matrix2: vertex-level transform — NOT inherited by children ----
+	// GRFEditor CalcMatrix2: TransformationMatrix * T(LocalPosition)
+	// Push saves Matrix1 state; children will see the stack up to here.
 
 	glPushMatrix();
 
-	if (main && only)
-		glTranslatef(-box->range[0], -box->range[1], -box->range[2]);
-
-	if (!main || !only)
-		glTranslatef(transf.todo[9], transf.todo[10], transf.todo[11]);
+	glMultMatrixf(Rot);                                                  // 3x3 TransformationMatrix
+	glTranslatef(transf.todo[9], transf.todo[10], transf.todo[11]);     // T(LocalPosition)
 
 	// Batch faces by texture to minimise glBegin/glEnd and state-change calls.
 	// Within a batch, glNormal3f is set per triangle (valid in immediate mode).

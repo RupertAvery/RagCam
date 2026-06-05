@@ -400,34 +400,9 @@ void RSM::Display(ro_position_t pos)
 
 	glScalef(pos.sx, -pos.sy, pos.sz);
 
-	Rot[0] = meshes[0].transf.todo[0];
-	Rot[1] = meshes[0].transf.todo[1];
-	Rot[2] = meshes[0].transf.todo[2];
-	Rot[3] = 0.0;
-
-	Rot[4] = meshes[0].transf.todo[3];
-	Rot[5] = meshes[0].transf.todo[4];
-	Rot[6] = meshes[0].transf.todo[5];
-	Rot[7] = 0.0;
-
-	Rot[8] = meshes[0].transf.todo[6];
-	Rot[9] = meshes[0].transf.todo[7];
-	Rot[10] = meshes[0].transf.todo[8];
-	Rot[11] = 0.0;
-
-	Rot[12] = 0.0;
-	Rot[13] = 0.0;
-	Rot[14] = 0.0;
-	Rot[15] = 1.0;
-
-	glScalef(meshes[0].transf.todo[19], meshes[0].transf.todo[20], meshes[0].transf.todo[21]);
-
-	glMultMatrixf(Rot);
-
-	glRotatef(meshes[0].transf.todo[15] * 180.0f / 3.14159f,
-			  meshes[0].transf.todo[16], meshes[0].transf.todo[17], meshes[0].transf.todo[18]);
-
-	glTranslatef(meshes[0].transf.todo[9], meshes[0].transf.todo[10], meshes[0].transf.todo[11]);
+	// GRFEditor v1.x: innermost RSW transform centres the RSM geometry.
+	// box.min[1] aligns the model's lowest vertex with the RSW anchor point.
+	glTranslatef(-box.range[0], box.min[1], -box.range[2]);
 
 	if (!meshes[0].only)
 		glTranslatef(-box.range[0], -box.max[1], -box.range[2]);
