@@ -400,9 +400,11 @@ void RSM::Display(ro_position_t pos)
 
 	glScalef(pos.sx, -pos.sy, pos.sz);
 
-	// GRFEditor v1.x: innermost RSW transform centres the RSM geometry.
-	// box.min[1] aligns the model's lowest vertex with the RSW anchor point.
-	glTranslatef(-box.range[0], box.min[1], -box.range[2]);
+	// Centre horizontally around the RSW anchor point.
+	// Y stays 0: RO meshes have GlobalScale.Y = -1 which combines with the RSW -sy
+	// to give net Y = +1, so box.min[1] (computed without GlobalScale) is in the
+	// wrong space and overcorrects vertical position when used here.
+	glTranslatef(-box.range[0], 0.0f, -box.range[2]);
 
 	glGetFloatv(GL_MODELVIEW_MATRIX, &Mat[0]);
 
