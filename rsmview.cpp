@@ -1025,7 +1025,7 @@ int WINAPI WinMain(HINSTANCE hInstance,		// Instance
 	//}
 
 	// Create Our OpenGL Window
-	if (!CreateGLWindow("RagCam", 1366, 768, 32, fullscreen))
+	if (!CreateGLWindow("RagCam", 800, 600, 32, fullscreen))
 	{
 		return 0; // Quit If Window Was Not Created
 	}
@@ -1115,7 +1115,7 @@ int WINAPI WinMain(HINSTANCE hInstance,		// Instance
 					KillGLWindow();			  // Kill Our Current Window
 					fullscreen = !fullscreen; // Toggle Fullscreen / Windowed Mode
 					// Recreate Our OpenGL Window
-					if (!CreateGLWindow("RagCam", 1920, 1080, 32, fullscreen))
+					if (!CreateGLWindow("RagCam", 800, 600, 32, fullscreen))
 					{
 						return 0; // Quit If Window Was Not Created
 					}
