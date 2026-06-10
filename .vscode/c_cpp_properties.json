@@ -3,15 +3,19 @@
         {
             "name": "Win32",
             "intelliSenseMode": "windows-msvc-x86",
-            "compilerPath": "${default}",
-            "windowsSdkVersion": "${default}",
+            "compilerPath": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+            "windowsSdkVersion": "10.0.26100.0",
             "cppStandard": "c++14",
             "cStandard": "c11",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
             "defines": [
                 "WIN32",
                 "_WINDOWS",
                 "_MBCS",
                 "GRF_STATIC",
+                "_USEGRF",
                 "_DEBUG"
             ]
         }
