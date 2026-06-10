@@ -12,20 +12,21 @@ The program that lets you fly though Ragnarok Online maps has been updated to su
 * No water (was a hack before)
 * Some incorrect animations
 * Buggy UI
+* Some maps like Payon are broken
 
 # Usage
 
 Dowload `ragcam.exe`
 
-Create a file called `ragcam.arg`, and something like below.
+Create a file called `ragcam.arg`, and add something like below as the contents
 
 ```
 C:\Gravity\Ragnarok Online\
 data\alberta.rsw
 ```
 
-First line: Path that contains data.grf. MUST end in a backslash
-Second line: data path to the map / gnd / model
+* First line: Path that contains data.grf. MUST end in a backslash
+* Second line: data path to the map / gnd / model
 
 Run the program.
 
